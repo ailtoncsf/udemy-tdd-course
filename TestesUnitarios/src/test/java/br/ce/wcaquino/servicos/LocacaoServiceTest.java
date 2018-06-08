@@ -6,13 +6,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -26,9 +25,11 @@ import br.ce.wcaquino.exceptions.LocadoraException;
 
 public class LocacaoServiceTest {
 	
-	private LocacaoService service;
+	/**************************************************************************************************************************************************
+	 * Caso seja nececssário utilizar valores de atributos entre testes criar então atributos estáticos pois estes não são reinicializados pelo Junit
+	 **************************************************************************************************************************************************/
 	
-	private static int contador = 0;
+	private LocacaoService service;
 	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
@@ -38,37 +39,21 @@ public class LocacaoServiceTest {
 	
 	@Before
 	public void setup() {
-		System.out.println("Antes");
 		service = new LocacaoService();
-		contador++;
-		System.out.println(contador);
-	}
-	
-	@After
-	public void tearDown() {
-		System.out.println("Depois");
-	}
-	
-	@BeforeClass
-	public static void setupClass() {
-		System.out.println("Antes da classe");
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-		System.out.println("Depois da classe");
 	}	
-	
 	
 	@Test
 	public void testeLocacao() throws Exception {
 		
 		//cenario		
 		Usuario usuario = new Usuario("Usuário 1");
-		Filme filme = new Filme("Filme1", 2, 5.0);
+		List<Filme> filmes = new ArrayList<Filme>();
 		
+		filmes.add(new Filme("Filme 1", 2, 2.0));
+		filmes.add(new Filme("Filme 2", 1, 2.0));
+		filmes.add(new Filme("Filme 3", 3, 1.0));
 		//acao
-		Locacao locacao = service.alugarFilme(usuario, filme);
+		Locacao locacao = service.alugarFilme(usuario, filmes);
 		
 		//verificacao
 		error.checkThat(locacao.getValor(), is(equalTo(5.0)));
@@ -86,10 +71,13 @@ public class LocacaoServiceTest {
 		 * 
 		 */
 		
-		
 		//cenario
 		Usuario usuario = new Usuario("Usuário 1");
-		Filme filme = new Filme("Filme 2", 0, 4.0);
+		List<Filme> filme = new ArrayList<Filme>();
+		
+		filme.add(new Filme("Filme 1", 0, 1.0));
+		filme.add(new Filme("Filme 2", 0, 2.0));
+		filme.add(new Filme("Filme 3", 0, 2.0));
 		
 		//acao
 		service.alugarFilme(usuario, filme);
@@ -108,7 +96,11 @@ public class LocacaoServiceTest {
 		
 		
 		//cenario
-		Filme filme = new Filme("Filme 2", 1, 4.0);
+		List<Filme> filme = new ArrayList<Filme>();
+		
+		filme.add(new Filme("Filme 1", 2, 1.0));
+		filme.add(new Filme("Filme 2", 2, 2.0));
+		filme.add(new Filme("Filme 3", 2, 2.0));
 		
 		//acao
 		try {
@@ -117,8 +109,6 @@ public class LocacaoServiceTest {
 		} catch (LocadoraException e) {
 			assertThat(e.getMessage(), is("Usuário vazio."));
 		}
-		
-		System.out.println("Forma robusta.");
 	}
 	
 	@Test
@@ -137,8 +127,5 @@ public class LocacaoServiceTest {
 
 		//acao
 		service.alugarFilme(usuario, null);
-		
-		System.out.println("Forma nova.");
-		
 	}
 }
