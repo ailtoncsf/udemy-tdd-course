@@ -1,11 +1,11 @@
 package br.ce.wcaquino.servicos;
 
-import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
-import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
+import static br.ce.wcaquino.matchers.MatchersProprios.caiNumaSegunda;
+import static br.ce.wcaquino.matchers.MatchersProprios.ehHoje;
+import static br.ce.wcaquino.matchers.MatchersProprios.ehHojeComDieferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeFalse;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,8 +61,8 @@ public class LocacaoServiceTest {
 		
 		//verificacao
 		error.checkThat(locacao.getValor(), is(equalTo(5.0)));
-		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+		error.checkThat(locacao.getDataLocacao(), ehHoje());
+		error.checkThat(locacao.getDataRetorno(), ehHojeComDieferencaDias(1));
 	}
 	
 	@Test(expected=FilmeSemEstoqueException.class)
@@ -147,7 +147,6 @@ public class LocacaoServiceTest {
 		Locacao resultado = service.alugarFilme(usuario, filme);
 		
 		//verificacao
-		boolean ehsegunda = DataUtils.verificarDiaSemana(resultado.getDataRetorno(), Calendar.MONDAY);
-		Assert.assertTrue(ehsegunda);
+		assertThat(resultado.getDataRetorno(), caiNumaSegunda());
 	}
 }
