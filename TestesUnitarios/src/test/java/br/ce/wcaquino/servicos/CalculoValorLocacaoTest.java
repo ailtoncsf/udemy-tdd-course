@@ -40,6 +40,10 @@ public class CalculoValorLocacaoTest {
 	
 	private LocacaoService service;
 	
+	private LocacaoDAO dao;
+	
+	private SPCService spc;
+	
 	private static Filme filme1 = umFilme().agora();
 	private static Filme filme2 = umFilme().agora();
 	private static Filme filme3 = umFilme().agora();
@@ -51,8 +55,10 @@ public class CalculoValorLocacaoTest {
 	@Before
 	public void setup() {
 		service = new LocacaoService();
-		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+		dao = Mockito.mock(LocacaoDAO.class);
 		service.setDao(dao);
+		spc = Mockito.mock(SPCService.class);
+		service.setSPCService(spc);
 	}		
 	
 	@Parameters(name="Teste {index} = {2}")
