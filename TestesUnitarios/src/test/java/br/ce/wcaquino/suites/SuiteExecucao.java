@@ -10,7 +10,11 @@ import br.ce.wcaquino.servicos.CalculadoraTest;
 import br.ce.wcaquino.servicos.CalculoValorLocacaoTest;
 import br.ce.wcaquino.servicos.LocacaoServiceTest;
 
-@RunWith(Suite.class)
+//@RunWith(Suite.class)
+/*
+ * Suite comentada.
+ * Pode haver uma repetição desnecessária dos testes caso seja executado com integração contínua (por exemploi) 
+ */
 @SuiteClasses({
 	CalculadoraTest.class,
 	CalculoValorLocacaoTest.class,
